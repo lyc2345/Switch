@@ -28,6 +28,12 @@ class ViewController: UIViewController {
         mySwitch.addTarget(self, action: #selector(ViewController.switchDidChangeValue(_:)), for: .valueChanged)
         view.addSubview(mySwitch)
     }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    mySwitch.borderWidth = 1.5
+  }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
