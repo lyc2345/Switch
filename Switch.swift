@@ -15,6 +15,14 @@ import UIKit
     var previousPoint: CGPoint?
     var switchLayerLeftPosition: CGPoint?
     var switchLayerRightPosition: CGPoint?
+  
+    @IBInspectable open var borderWidth: CGFloat = 1 {
+      didSet {
+        backgroundLayer.borderWidth = self.borderWidth
+        switchLayer.borderWidth = self.borderWidth
+        backgroundLayer.layoutSublayers()
+      }
+    }
 
     static let labelFactory: () -> UILabel = {
         let label = UILabel()
@@ -100,11 +108,11 @@ import UIKit
     func setup() {
         backgroundLayer.backgroundColor = UIColor.white.cgColor
         backgroundLayer.borderColor = disabledColor.cgColor
-        backgroundLayer.borderWidth = 1
+        backgroundLayer.borderWidth = borderWidth
         layer.addSublayer(backgroundLayer)
 
         switchLayer.borderColor = tintColor.cgColor
-        switchLayer.borderWidth = 1
+        switchLayer.borderWidth = borderWidth
         layer.addSublayer(switchLayer)
 
         addSubview(leftLabel)
