@@ -68,12 +68,25 @@ import UIKit
     }
 
     /// The color used for the unselected text and the border. The default value is light gray.
-    @IBInspectable open var disabledColor: UIColor = UIColor.lightGray {
+    @IBInspectable open var enabledColor: UIColor = UIColor.white {
         didSet {
-            backgroundLayer.borderColor = disabledColor.cgColor
+            backgroundLayer.borderColor = enabledBorderColor.cgColor
             reloadLabelsTextColor()
         }
     }
+    @IBInspectable open var disabledColor: UIColor = UIColor.lightGray {
+        didSet {
+            backgroundLayer.borderColor = enabledBorderColor.cgColor
+            reloadLabelsTextColor()
+        }
+    }
+  
+    @IBInspectable open var enabledBorderColor: UIColor = UIColor.lightGray {
+         didSet {
+             switchLayer.borderColor = enabledBorderColor.cgColor
+             reloadLabelsTextColor()
+         }
+     }
 
     /// The color used for the switch background. Transparent by default.
     @IBInspectable open var backColor: UIColor = UIColor.clear {
@@ -82,6 +95,11 @@ import UIKit
         }
     }
 
+    @IBInspectable open var backBorderColor: UIColor = UIColor.clear {
+         didSet {
+            backgroundLayer.borderColor = backBorderColor.cgColor
+         }
+     }
     /// The color used for the selected text and the switch border.
     override open var tintColor: UIColor! {
         didSet {
@@ -89,7 +107,13 @@ import UIKit
             reloadLabelsTextColor()
         }
     }
-
+  
+    @IBInspectable open var enabledBackgroundColor: UIColor = UIColor.clear {
+        didSet {
+            switchLayer.backgroundColor = enabledBackgroundColor.cgColor
+        }
+    }
+  
     var touchBegan = false
     var touchBeganInSwitchLayer = false
     var touchMoved = false
@@ -107,12 +131,13 @@ import UIKit
 
     func setup() {
         backgroundLayer.backgroundColor = UIColor.white.cgColor
-        backgroundLayer.borderColor = disabledColor.cgColor
+        backgroundLayer.borderColor = backBorderColor.cgColor
         backgroundLayer.borderWidth = borderWidth
         layer.addSublayer(backgroundLayer)
 
-        switchLayer.borderColor = tintColor.cgColor
+        switchLayer.borderColor = enabledBorderColor.cgColor
         switchLayer.borderWidth = borderWidth
+        switchLayer.backgroundColor = enabledBackgroundColor.cgColor
         layer.addSublayer(switchLayer)
 
         addSubview(leftLabel)
@@ -210,8 +235,8 @@ import UIKit
     }
 
     func reloadLabelsTextColor() {
-        leftLabel.textColor = rightSelected ? disabledColor : tintColor
-        rightLabel.textColor = rightSelected ? tintColor : disabledColor
+        leftLabel.textColor = rightSelected ? disabledColor : enabledColor
+        rightLabel.textColor = rightSelected ? enabledColor : disabledColor
     }
 
     func reloadSwitchLayerPosition() {
